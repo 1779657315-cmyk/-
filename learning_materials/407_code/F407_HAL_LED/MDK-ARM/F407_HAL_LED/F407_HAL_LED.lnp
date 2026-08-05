@@ -1,0 +1,28 @@
+--cpu=Cortex-M4.fp.sp
+"f407_hal_led\startup_stm32f407xx.o"
+"f407_hal_led\main.o"
+"f407_hal_led\gpio.o"
+"f407_hal_led\tim.o"
+"f407_hal_led\stm32f4xx_it.o"
+"f407_hal_led\stm32f4xx_hal_msp.o"
+"f407_hal_led\init.o"
+"f407_hal_led\stm32f4xx_hal_tim.o"
+"f407_hal_led\stm32f4xx_hal_tim_ex.o"
+"f407_hal_led\stm32f4xx_hal_rcc.o"
+"f407_hal_led\stm32f4xx_hal_rcc_ex.o"
+"f407_hal_led\stm32f4xx_hal_flash.o"
+"f407_hal_led\stm32f4xx_hal_flash_ex.o"
+"f407_hal_led\stm32f4xx_hal_flash_ramfunc.o"
+"f407_hal_led\stm32f4xx_hal_gpio.o"
+"f407_hal_led\stm32f4xx_hal_dma_ex.o"
+"f407_hal_led\stm32f4xx_hal_dma.o"
+"f407_hal_led\stm32f4xx_hal_pwr.o"
+"f407_hal_led\stm32f4xx_hal_pwr_ex.o"
+"f407_hal_led\stm32f4xx_hal_cortex.o"
+"f407_hal_led\stm32f4xx_hal.o"
+"f407_hal_led\stm32f4xx_hal_exti.o"
+"f407_hal_led\system_stm32f4xx.o"
+--strict --scatter "F407_HAL_LED\F407_HAL_LED.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "F407_HAL_LED.map" -o F407_HAL_LED\F407_HAL_LED.axf
