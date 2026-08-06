@@ -18,7 +18,7 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include "Init.h"
+#include "tim.h"
 
 /* USER CODE BEGIN 0 */
 
@@ -100,28 +100,6 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 }
 
 /* USER CODE BEGIN 1 */
-//以定时器6启动单线程调度循环，周期1ms
-void TIM6_LOOP(void)  
-{
 
-}
-//中断回调函数
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-    if (htim->Instance == TIM6)
-      {
-        TIM6_LOOP();
-      }
-}
-
-void loop_10ms_task(void)
-{
-
-}
-
-void loop_10s_task(void)
-{
-
-}
 
 /* USER CODE END 1 */

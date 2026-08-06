@@ -17,11 +17,14 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
-#include "Init.h"
+#include "main.h"
+#include "tim.h"
+#include "usart.h"
+#include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Init.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -86,8 +89,15 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM6_Init();
+  MX_USART3_UART_Init(); //WIFI
+  MX_USART1_UART_Init(); //USB转串口
   /* USER CODE BEGIN 2 */
-  HAL_TIM_Base_Start_IT(&htim6);  //定时器使能
+	
+	
+  //HAL_TIM_Base_Start_IT(&htim6);  //定时器使能
+	#define MAX_LENGTH 200
+	uint8_t RceBuffer[MAX_LENGTH];
+	
 
   /* USER CODE END 2 */
 
@@ -96,8 +106,11 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
     /* USER CODE BEGIN 3 */
+		printf("waiting\n");
+		HAL_UART_Receive(&huart1,&RceBuffer[0],2,HAL_MAX_DELAY);
+		printf("%c and %c\n",RceBuffer[0],RceBuffer[1]);
+		HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

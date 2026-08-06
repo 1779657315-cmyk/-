@@ -1,7 +1,4 @@
 f407_hal_led\tim.o: ../Core/Src/tim.c
-f407_hal_led\tim.o: ../Core/Inc/Init.h
-f407_hal_led\tim.o: ../Core/Inc/gpio.h
-f407_hal_led\tim.o: ../Core/Inc/Init.h
 f407_hal_led\tim.o: ../Core/Inc/tim.h
 f407_hal_led\tim.o: ../Core/Inc/main.h
 f407_hal_led\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h
@@ -34,3 +31,4 @@ f407_hal_led\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 f407_hal_led\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 f407_hal_led\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h
 f407_hal_led\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h
+f407_hal_led\tim.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
