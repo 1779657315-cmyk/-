@@ -8,7 +8,4 @@ void TIM6_LOOP(void);
 void loop_10ms_task(void);
 void loop_10s_task(void);
 
-
-
 #endif
-

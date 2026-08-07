@@ -1,0 +1,16 @@
+root = true
+
+[Core/**/*.{c,h}]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+
+[{F407_HAL_LED.ioc,.mxproject}]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+
+[MDK-ARM/*.{uvprojx,uvoptx}]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true

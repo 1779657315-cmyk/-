@@ -1,0 +1,6 @@
+/Core/**/*.c text eol=crlf
+/Core/**/*.h text eol=crlf
+/F407_HAL_LED.ioc text eol=crlf
+/.mxproject text eol=crlf
+/MDK-ARM/*.uvprojx text eol=crlf
+/MDK-ARM/*.uvoptx text eol=crlf

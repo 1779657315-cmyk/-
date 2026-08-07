@@ -31,7 +31,7 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "Init.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define WIFI_ENABLE_Pin GPIO_PIN_2
+#define WIFI_ENABLE_GPIO_Port GPIOE
 #define SW3_Pin GPIO_PIN_13
 #define SW3_GPIO_Port GPIOC
 #define SW3_EXTI_IRQn EXTI15_10_IRQn
@@ -73,7 +75,10 @@ void Error_Handler(void);
 #define WIFI_RST_GPIO_Port GPIOG
 
 /* USER CODE BEGIN Private defines */
-
+#define CH340_MAX_LENGTH 64 //串口缓冲区最大长度
+#define WIFI_MAX_INDEX 2048 //WIFI缓冲区最大长度
+extern uint8_t  CH340_RceBuffer[CH340_MAX_LENGTH];
+extern uint8_t  WIFI_RceBuffer[WIFI_MAX_INDEX];
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
