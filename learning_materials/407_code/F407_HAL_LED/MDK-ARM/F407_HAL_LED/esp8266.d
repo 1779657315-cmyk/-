@@ -3,6 +3,7 @@ f407_hal_led\esp8266.o: ../Core/Inc/esp8266.h
 f407_hal_led\esp8266.o: ../Core/Inc/Init.h
 f407_hal_led\esp8266.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
 f407_hal_led\esp8266.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+f407_hal_led\esp8266.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 f407_hal_led\esp8266.o: ../Core/Inc/gpio.h
 f407_hal_led\esp8266.o: ../Core/Inc/main.h
 f407_hal_led\esp8266.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h

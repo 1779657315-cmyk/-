@@ -57,8 +57,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t CH340_RceBuffer[CH340_MAX_LENGTH];
-uint8_t WIFI_RceBuffer[WIFI_MAX_INDEX];
+uint8_t CH340_RceBuffer[CH340_MAX_LENGTH];//CH340接收缓冲区
 /* USER CODE END 0 */
 
 /**
@@ -96,12 +95,13 @@ int main(void)
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
 	
-	
   //HAL_TIM_Base_Start_IT(&htim6);  //定时器使能
-	ESP8266_Init();
   HAL_UARTEx_ReceiveToIdle_IT(&huart1,CH340_RceBuffer,CH340_MAX_LENGTH);  //CH340串口接收中断
 	HAL_UARTEx_ReceiveToIdle_DMA(&huart3,WIFI_RceBuffer,WIFI_MAX_INDEX); //WIFI_DMA接收中断
 
+	/* 业务初始化  */
+	WIFI_init();
+	
 	
   /* USER CODE END 2 */
 

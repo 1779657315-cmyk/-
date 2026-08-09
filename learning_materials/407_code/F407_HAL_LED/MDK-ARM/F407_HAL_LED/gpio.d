@@ -35,6 +35,7 @@ f407_hal_led\gpio.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 f407_hal_led\gpio.o: ../Core/Inc/Init.h
 f407_hal_led\gpio.o: D:\keil5\ARM\ARMCC\Bin\..\include\string.h
 f407_hal_led\gpio.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdio.h
+f407_hal_led\gpio.o: D:\keil5\ARM\ARMCC\Bin\..\include\stdbool.h
 f407_hal_led\gpio.o: ../Core/Inc/gpio.h
 f407_hal_led\gpio.o: ../Core/Inc/tim.h
 f407_hal_led\gpio.o: ../Core/Inc/main.h

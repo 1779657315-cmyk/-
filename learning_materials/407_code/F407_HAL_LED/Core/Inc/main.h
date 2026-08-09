@@ -76,9 +76,7 @@ void Error_Handler(void);
 
 /* USER CODE BEGIN Private defines */
 #define CH340_MAX_LENGTH 64 //串口缓冲区最大长度
-#define WIFI_MAX_INDEX 2048 //WIFI缓冲区最大长度
 extern uint8_t  CH340_RceBuffer[CH340_MAX_LENGTH];
-extern uint8_t  WIFI_RceBuffer[WIFI_MAX_INDEX];
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

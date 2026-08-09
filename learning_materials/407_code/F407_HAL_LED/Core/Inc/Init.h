@@ -4,11 +4,13 @@
 /* Includes liarbry------------------------------------------------------------------*/
 #include <string.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include "gpio.h"
 #include "tim.h"
 #include "main.h"
 #include "tim.h"
 #include "usart.h"
+
 
 
 #include "dma.h"
