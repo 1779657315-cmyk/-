@@ -831,10 +831,11 @@ ARM Macro Assembler    Page 13
               00000000 
 Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp.sp --apcs=
 interwork --depend=f407_hal_led\startup_stm32f407xx.d -of407_hal_led\startup_st
-m32f407xx.o -I.\RTE\_F407_HAL_LED -ID:\keil5\ARM\PACK\ARM\CMSIS\5.9.0\CMSIS\Cor
-e\Include --predefine="__MICROLIB SETA 1" --predefine="__UVISION_VERSION SETA 5
-39" --predefine="_RTE_ SETA 1" --predefine="STM32F407xx SETA 1" --predefine="_R
-TE_ SETA 1" --list=startup_stm32f407xx.lst startup_stm32f407xx.s
+m32f407xx.o -I../Drivers/CMSIS/Include -I.\RTE\_F407_HAL_LED -ID:\keil5\ARM\PAC
+K\ARM\CMSIS\5.9.0\CMSIS\Core\Include --predefine="__MICROLIB SETA 1" --predefin
+e="__UVISION_VERSION SETA 539" --predefine="_RTE_ SETA 1" --predefine="STM32F40
+7xx SETA 1" --predefine="_RTE_ SETA 1" --list=startup_stm32f407xx.lst startup_s
+tm32f407xx.s
 
 
 

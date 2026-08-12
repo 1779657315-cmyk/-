@@ -1,10 +1,16 @@
 #include "esp8266.h"
+#include <stdlib.h>
 
 /* Private variables ---------------------------------------------------------*/
 uint8_t WIFI_RceBuffer[WIFI_MAX_INDEX];   //WIFI接收缓冲区
 volatile bool wifi_receive_update = false;
 volatile uint16_t wifi_rx_read_index = 0;
 volatile uint16_t wifi_rx_write_index = 0;
+volatile bool wifi_rx_overflow = false;
+
+static uint16_t WIFI_Buffer_Available(void);
+static uint8_t WIFI_Buffer_FindString(const char *target);
+static void WIFI_Buffer_DiscardAll(void);
 
 /* Application layer ---------------------------------------------------------*/
 
@@ -41,8 +47,8 @@ uint8_t ESP8266_AT_Send(const char *cmd)
 {
 	int len;
 
-	// 清空接收缓冲区，防止残留数据影响后续检测   目前无意义
-	memset(WIFI_RceBuffer, 0, WIFI_MAX_INDEX);
+	// 丢弃旧回包，防止残留数据影响后续检测
+	WIFI_Buffer_DiscardAll();
 	
 	// 格式化 AT 指令：在结尾添加回车换行
 	char buf[128];
@@ -87,7 +93,7 @@ uint8_t ESP8266_WaitResponse(const char *target, uint32_t timeout_ms)
 	{
 		if(HAL_GetTick() - tick_start > timeout_ms)
 		{
-			memset(WIFI_RceBuffer, 0, WIFI_MAX_INDEX);
+			WIFI_Buffer_DiscardAll();
 			return 0;
 		}
 	}
@@ -97,11 +103,9 @@ uint8_t ESP8266_WaitResponse(const char *target, uint32_t timeout_ms)
 
 	while(HAL_GetTick() - tick_start <= timeout_ms)
 	{
-		WIFI_RceBuffer[WIFI_MAX_INDEX - 1] = '\0';
-
-		if(strstr((char *)WIFI_RceBuffer, target) != NULL)
+		if(WIFI_Buffer_FindString(target))
 		{
-			memset(WIFI_RceBuffer, 0, WIFI_MAX_INDEX);
+			WIFI_Buffer_DiscardAll();
 			return 1;
 		}
 
@@ -112,7 +116,7 @@ uint8_t ESP8266_WaitResponse(const char *target, uint32_t timeout_ms)
 		}
 	}
 
-	memset(WIFI_RceBuffer, 0, WIFI_MAX_INDEX);
+	WIFI_Buffer_DiscardAll();
 	return 0;
 }
 
@@ -263,10 +267,10 @@ void ESP8266_UART_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
 		wifi_receive_update = true;
 
 		//WIFI转移串口回显操作
-		HAL_UART_Transmit_IT(&huart1,WIFI_RceBuffer,Size); 
+		//HAL_UART_Transmit_IT(&huart1,WIFI_RceBuffer,Size);
 		
 		// 重新启动 ESP8266 DMA 接收
-		HAL_UARTEx_ReceiveToIdle_DMA(&huart3,WIFI_RceBuffer,WIFI_MAX_INDEX);
+		WIFI_Receive_DMA_Set(Size);
 	}
 }
 
@@ -284,6 +288,198 @@ void ESP8266_UART_ErrorCallback(UART_HandleTypeDef *huart)
         __HAL_UART_CLEAR_FEFLAG(&huart3);
 
         // 重新启动 ESP8266 DMA 接收
-        HAL_UARTEx_ReceiveToIdle_DMA(&huart3,WIFI_RceBuffer,WIFI_MAX_INDEX);
-	    }
+        WIFI_Receive_DMA_Set(0);
+	}
+}
+
+/* ESP8266 receive ring buffer -----------------------------------------------*/
+
+/**
+  * @brief  获取 WIFI 接收环形缓冲区当前可读数据长度。
+  * @retval 当前可读字节数。
+  */
+static uint16_t WIFI_Buffer_Available(void)
+{
+	if(wifi_rx_write_index >= wifi_rx_read_index)
+	{
+		return wifi_rx_write_index - wifi_rx_read_index;
+	}
+	else
+	{
+		return WIFI_MAX_INDEX - wifi_rx_read_index + wifi_rx_write_index;
+	}
+}
+
+/**
+  * @brief  在 WIFI 接收环形缓冲区中查找目标字符串。
+  * @param  target: 需要查找的目标字符串。
+  * @retval 0 表示未找到，1 表示找到。
+  */
+static uint8_t WIFI_Buffer_FindString(const char *target)
+{
+	uint16_t available;
+	uint16_t target_len;
+	uint16_t i;
+	uint16_t j;
+	uint16_t index;
+
+	if(target == NULL)
+	{
+		return 0;
+	}
+
+	target_len = strlen(target);
+	if(target_len == 0)
+	{
+		return 1;
+	}
+
+	available = WIFI_Buffer_Available();
+	if(available < target_len)
+	{
+		return 0;
+	}
+
+	for(i = 0; i <= available - target_len; i++)
+	{
+		for(j = 0; j < target_len; j++)
+		{
+			index = wifi_rx_read_index + i + j;
+			if(index >= WIFI_MAX_INDEX)
+			{
+				index -= WIFI_MAX_INDEX;
+			}
+
+			if(WIFI_RceBuffer[index] != (uint8_t)target[j])
+			{
+				break;
+			}
+		}
+
+		if(j == target_len)
+		{
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+/**
+  * @brief  丢弃 WIFI 接收环形缓冲区中当前已接收但未消费的数据。
+  * @retval 无
+  */
+static void WIFI_Buffer_DiscardAll(void)
+{
+	wifi_rx_read_index = wifi_rx_write_index;
+	wifi_receive_update = false;
+}
+
+/**
+  * @brief  获取从当前写指针开始的连续可写空间。
+  * @note   DMA 只能写连续内存，因此这里返回的不是总剩余空间，
+  *         而是本次 DMA 可以安全写入的连续长度。
+  * @retval 当前连续可写字节数；0 表示缓冲区已满或无安全连续空间。
+  */
+static uint16_t WIFI_Buffer_LinearFree(void)
+{
+	if(wifi_rx_write_index >= wifi_rx_read_index)
+	{
+		if(wifi_rx_read_index == 0)
+		{
+			return WIFI_MAX_INDEX - wifi_rx_write_index - 1;
+		}
+		else
+		{
+			return WIFI_MAX_INDEX - wifi_rx_write_index;
+		}
+	}
+	else
+	{
+		return wifi_rx_read_index - wifi_rx_write_index - 1;
+	}
+}
+
+/**
+  * @brief  更新 WIFI 接收写指针，并重新启动 USART3 ReceiveToIdle DMA。
+  * @param  Size: 本次 DMA 接收事件收到的数据长度；首次启动时传 0。
+  * @retval 0 表示失败，1 表示成功。
+  */
+uint8_t WIFI_Receive_DMA_Set(uint16_t Size)
+{
+	uint16_t remain_index;
+	uint32_t next_write_index;
+
+	next_write_index = wifi_rx_write_index + Size;
+	if(next_write_index >= WIFI_MAX_INDEX)
+	{
+		next_write_index -= WIFI_MAX_INDEX;
+	}
+	wifi_rx_write_index = (uint16_t)next_write_index;
+
+	remain_index = WIFI_Buffer_LinearFree();
+	if(remain_index == 0)
+	{
+		wifi_rx_overflow = true;
+		return 0;
+	}
+
+	//重启DMA中断接收
+	if(HAL_UARTEx_ReceiveToIdle_DMA(&huart3,&WIFI_RceBuffer[wifi_rx_write_index],remain_index) != HAL_OK)
+	{
+		return 0;
+	}
+	//仅空闲/满可触发中断
+	__HAL_DMA_DISABLE_IT(huart3.hdmarx, DMA_IT_HT);
+	return 1;
+}
+
+/**
+  * @brief  从 WIFI 接收环形缓冲区读取指定长度数据。
+  * @param  read_length: 需要读取的数据长度，单位字节。
+  * @retval 0 表示失败，1 表示成功。
+  */
+uint8_t WIFI_Buffer_read(uint16_t read_length)
+{
+	uint8_t *read_buffer;
+
+	if(read_length == 0)
+	{
+		return 1;
+	}
+
+	if(read_length > WIFI_Buffer_Available())
+	{
+		return 0;
+	}
+
+	read_buffer = malloc(read_length);
+	if(read_buffer == NULL)
+	{
+		return 0;
+	}
+
+	if(wifi_rx_read_index + read_length > WIFI_MAX_INDEX)  // 溢出场景
+	{
+		uint16_t second_len = wifi_rx_read_index + read_length - WIFI_MAX_INDEX; //从头开始要读的长度
+		uint16_t first_len = WIFI_MAX_INDEX - wifi_rx_read_index;
+
+		memcpy(read_buffer,&WIFI_RceBuffer[wifi_rx_read_index],first_len);
+		memcpy(read_buffer + first_len,WIFI_RceBuffer,second_len);
+		wifi_rx_read_index = second_len;
+	}
+	else //不溢出
+	{
+		memcpy(read_buffer,&WIFI_RceBuffer[wifi_rx_read_index],read_length);
+		wifi_rx_read_index += read_length;
+		if(wifi_rx_read_index == WIFI_MAX_INDEX)
+		{
+			wifi_rx_read_index = 0;
+		}
+	}
+	/*
+	command_get()  通过read_buffer获取功能码
+	*/
+	free(read_buffer);
+	return 1;
 }

@@ -7,7 +7,7 @@
 /* Config --------------------------------------------------------------------*/
 #define WIFI_SSID  			"205"
 #define WIFI_PASSWORD   "Knight17"
-#define TCP_HOST       	"192.168.66.109"
+#define TCP_HOST       	"192.168.66.100"
 #define TCP_PORT        "8080"
 #define WIFI_MAX_INDEX  2048 //WIFI缓冲区最大长度
 
@@ -18,6 +18,10 @@ extern volatile uint16_t wifi_rx_write_index;
 
 /* Application layer ---------------------------------------------------------*/
 void WIFI_init(void);
+
+/* ESP8266 receive ring buffer -----------------------------------------------*/
+uint8_t WIFI_Receive_DMA_Set(uint16_t Size);
+uint8_t WIFI_Buffer_read(uint16_t read_length);
 
 /* ESP8266 AT stage ----------------------------------------------------------*/
 uint8_t ESP8266_Reset(void);
