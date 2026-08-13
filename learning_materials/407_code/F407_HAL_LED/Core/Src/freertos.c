@@ -35,7 +35,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define FLAG1 (1<<0)
+#define FLAG2 (1<<1)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -52,14 +53,14 @@ osThreadId_t LED_open_closeHandle;
 const osThreadAttr_t LED_open_close_attributes = {
   .name = "LED_open_close",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityHigh,
 };
 /* Definitions for usart1_show */
 osThreadId_t usart1_showHandle;
 const osThreadAttr_t usart1_show_attributes = {
   .name = "usart1_show",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityHigh,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for myTask03 */
 osThreadId_t myTask03Handle;
@@ -72,6 +73,11 @@ const osThreadAttr_t myTask03_attributes = {
 osMessageQueueId_t myQueue01Handle;
 const osMessageQueueAttr_t myQueue01_attributes = {
   .name = "myQueue01"
+};
+/* Definitions for myTimer01 */
+osTimerId_t myTimer01Handle;
+const osTimerAttr_t myTimer01_attributes = {
+  .name = "myTimer01"
 };
 /* Definitions for myMutex01 */
 osMutexId_t myMutex01Handle;
@@ -102,6 +108,7 @@ const osEventFlagsAttr_t myEvent01_attributes = {
 void LED_open_close_task(void *argument);
 void usart1_show_task(void *argument);
 void StartTask03(void *argument);
+void Callback01(void *argument);
 
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
@@ -133,7 +140,12 @@ void MX_FREERTOS_Init(void) {
   /* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
 
+  /* Create the timer(s) */
+  /* creation of myTimer01 */
+  myTimer01Handle = osTimerNew(Callback01, osTimerPeriodic, NULL, &myTimer01_attributes);
+
   /* USER CODE BEGIN RTOS_TIMERS */
+	osTimerStart(myTimer01Handle,1000);
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
@@ -179,12 +191,11 @@ void LED_open_close_task(void *argument)
 {
   /* USER CODE BEGIN LED_open_close_task */
   /* Infinite loop */
-	int count = 0;
   for(;;)
   {	
+		osThreadFlagsWait(FLAG1,osFlagsWaitAll,3000);
+		printf("FLAG1 IS OK\r\n");
 		osDelay(1000);
-		printf("TASK_mid:%d\r\n",count);
-		count++;
   }
   /* USER CODE END LED_open_close_task */
 }
@@ -200,14 +211,11 @@ void usart1_show_task(void *argument)
 {
   /* USER CODE BEGIN usart1_show_task */
   /* Infinite loop */
-	int count = 0;
   for(;;)
   {	
+		
+		printf("FLAG_WAIT IS OK\r\n");
 		osDelay(1000);
-		osMutexAcquire(myMutex01Handle, 1000);
-		printf("TASK_high:%d\r\n",count);
-		osMutexRelease(myMutex01Handle);
-		count++;
   }
   /* USER CODE END usart1_show_task */
 }
@@ -223,17 +231,22 @@ void StartTask03(void *argument)
 {
   /* USER CODE BEGIN StartTask03 */
   /* Infinite loop */
-	int count = 0;
   for(;;)
   {
-		osMutexAcquire(myMutex01Handle, 1000);
-		osDelay(1000);
-		printf("TASK_low:%d\r\n",count);
-		osMutexRelease(myMutex01Handle);
 		
-		count++;
+		printf("FLAG2 IS OK\r\n");
+		osThreadFlagsSet(LED_open_closeHandle,FLAG1);
+		osDelay(1000);
   }
   /* USER CODE END StartTask03 */
+}
+
+/* Callback01 function */
+void Callback01(void *argument)
+{
+  /* USER CODE BEGIN Callback01 */
+	HAL_GPIO_TogglePin(GPIOF,LED_B_Pin);
+  /* USER CODE END Callback01 */
 }
 
 /* Private application code --------------------------------------------------*/
