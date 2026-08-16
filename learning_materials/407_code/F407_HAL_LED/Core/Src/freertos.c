@@ -145,7 +145,7 @@ void MX_FREERTOS_Init(void) {
   myTimer01Handle = osTimerNew(Callback01, osTimerPeriodic, NULL, &myTimer01_attributes);
 
   /* USER CODE BEGIN RTOS_TIMERS */
-	osTimerStart(myTimer01Handle,1000);
+	osTimerStart(myTimer01Handle,1000); //开启软件定时器
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
@@ -245,7 +245,7 @@ void StartTask03(void *argument)
 void Callback01(void *argument)
 {
   /* USER CODE BEGIN Callback01 */
-	HAL_GPIO_TogglePin(GPIOF,LED_B_Pin);
+	//HAL_GPIO_TogglePin(GPIOF,LED_R_Pin);
   /* USER CODE END Callback01 */
 }
 
