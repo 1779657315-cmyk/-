@@ -10,7 +10,7 @@ RTOS任务管理链表由三种结构体构成：
 
 ### 1. **链表管理容器**
 
-```
+```c
 typedef struct xLIST
 {
 
@@ -27,7 +27,7 @@ typedef struct xLIST
 
 ### 2. **普通链表节点**
 
-```
+```c
 typedef struct
 
 {
@@ -53,7 +53,7 @@ struct List *pxContainer;             //位于哪一个类型的链
 
 
 ### 3. **尾哨兵**
-```
+```c
 struct xMINI_LIST_ITEM
 
 {
@@ -75,7 +75,7 @@ typedef struct xMINI_LIST_ITEM MiniListItem_t;
 
 ### 注：完整性检查一般是用于内核调试 / RAM 越界破坏检测机制。都是一些固定值比对校验
 
-```
+```c
 configUSE_LIST_DATA_INTEGRITY_CHECK_BYTES == 1  //开启校验config
 ```
 
@@ -95,7 +95,7 @@ RTOS内核链表核心操作函数:
 
 ### 1. **vListInitialise****初始化链表容器
 
-```
+```c
 //入参1：注册的初始容器起始地址
 void vListInitialise( List_t * const pxList )
 {
@@ -116,7 +116,7 @@ void vListInitialise( List_t * const pxList )
 
 ### 2.vListInitialiseItem()初始化普通节点
 
-```
+```c
 //入参1：注册普通节点的起始地址
 void vListInitialiseItem( ListItem_t * const pxItem ) 
 {
@@ -128,9 +128,11 @@ void vListInitialiseItem( ListItem_t * const pxItem )
 }
 ```
 
+
+
 ### 3.vListInsertEnd()将节点插到当前游标位置前面
 
-```
+```c
 //入参1：要插入的目标链表
 //入参2：要被插入的目标节点
 void vListInsertEnd( List_t * const pxList,
@@ -153,7 +155,7 @@ void vListInsertEnd( List_t * const pxList,
 
 ### 4.vListInsert()将节点按链表排列顺序（xItemValue）插入
 
-```
+```c
 //入参1：要插入的目标链表
 //入参2：要被插入的目标节点
 void vListInsert( List_t * const pxList,
@@ -208,7 +210,7 @@ void vListInsert( List_t * const pxList,
 ```
 
 ### 5.uxListRemove()删除节点
-```
+```c
 //入参1：需要删除的节点的地址
 UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
 {
@@ -237,7 +239,7 @@ UBaseType_t uxListRemove( ListItem_t * const pxItemToRemove )
 ```
 
 注：为什么删除后要把游标往前推而不是往后退：
-```
+```c
 	//若删除的节点恰好为遍历的游标节点
     if( pxList->pxIndex == pxItemToRemove )
     {
@@ -258,3 +260,48 @@ A ⇄ B ⇄ C
 
 ## PART3:内核链表常用宏
 
+
+### 1. 操作 `ListItem_t` 节点
+| 宏                                             | 作用                        |
+| --------------------------------------------- | ------------------------- |
+| `listSET_LIST_ITEM_OWNER(pxListItem,pxOwner)` | 设置节点的 `pvOwner`           |
+| `listGET_LIST_ITEM_OWNER(pxListItem)`         | 获取节点的 `pvOwner`           |
+| `listSET_LIST_ITEM_VALUE(pxListItem, xValue)` | 设置节点的 `xItemValue`        |
+| `listGET_LIST_ITEM_VALUE(pxListItem)`         | 获取节点的 `xItemValue`        |
+| `listGET_NEXT(pxListItem)`                    | 获取当前节点的下一个节点              |
+| `listLIST_ITEM_CONTAINER(pxListItem)`         | 获取节点当前所在的链表 `pxContainer` |
+### 2. 操作 `List_t` 链表
+
+| 宏                                 | 作用               |
+| --------------------------------- | ---------------- |
+| `listLIST_IS_EMPTY(pxList)`       | 判断链表是否为空         |
+| `listCURRENT_LIST_LENGTH(pxList)` | 获取链表节点数量         |
+| `listGET_HEAD_ENTRY(pxList)`      | 获取第一个真实节点        |
+| `listGET_END_MARKER(pxList)`      | 获取尾哨兵 `xListEnd` |
+| `listLIST_IS_INITIALISED(pxList)` | 判断链表是否已经初始化      |
+### 3.获取节点对应的任务/对象
+
+| 宏                                              | 作用                                 |
+| ---------------------------------------------- | ---------------------------------- |
+| `listGET_OWNER_OF_HEAD_ENTRY(pxList)`          | 获取第一个节点的 `pvOwner`                 |
+| `listGET_OWNER_OF_NEXT_ENTRY(pxOwner, pxList)` | `pxIndex` 向后轮询，并获取下一个节点的 `pvOwner` |
+| `listIS_CONTAINED_WITHIN(pxList,pxListItem)`   | 判断某节点是不是在指定链表中                     |
+
+### 总结：
+
+| 宏                                              | 入参                                           | 返回/效果                                    |
+| ---------------------------------------------- | -------------------------------------------- | ---------------------------------------- |
+| `listSET_LIST_ITEM_OWNER(pxListItem, pxOwner)` | `pxListItem`：节点指针；`pxOwner`：owner 指针，通常是 TCB | 设置 `pvOwner`                             |
+| `listGET_LIST_ITEM_OWNER(pxListItem)`          | `pxListItem`：节点指针                            | 返回 `pvOwner`                             |
+| `listSET_LIST_ITEM_VALUE(pxListItem, xValue)`  | `pxListItem`：节点指针；`xValue`：排序值               | 设置 `xItemValue`                          |
+| `listGET_LIST_ITEM_VALUE(pxListItem)`          | `pxListItem`：节点指针                            | 返回 `xItemValue`                          |
+| `listGET_NEXT(pxListItem)`                     | `pxListItem`：当前节点指针                          | 返回下一个节点指针                                |
+| `listLIST_ITEM_CONTAINER(pxListItem)`          | `pxListItem`：节点指针                            | 返回该节点所在链表 `pxContainer`                  |
+| `listLIST_IS_EMPTY(pxList)`                    | `pxList`：链表指针                                | 返回链表是否为空                                 |
+| `listCURRENT_LIST_LENGTH(pxList)`              | `pxList`：链表指针                                | 返回节点数量                                   |
+| `listGET_HEAD_ENTRY(pxList)`                   | `pxList`：链表指针                                | 返回第一个真实节点                                |
+| `listGET_END_MARKER(pxList)`                   | `pxList`：链表指针                                | 返回尾哨兵地址                                  |
+| `listGET_ITEM_VALUE_OF_HEAD_ENTRY(pxList)`     | `pxList`：链表指针                                | 返回首节点的 `xItemValue`                      |
+| `listGET_OWNER_OF_HEAD_ENTRY(pxList)`          | `pxList`：链表指针                                | 返回首节点的 `pvOwner`                         |
+| `listGET_OWNER_OF_NEXT_ENTRY(pxOwner,pxList)`  | `pxOwner`：用于接收 owner 的变量；`pxList`：链表指针       | 推进 `pxIndex`，并把下一个节点的 owner 赋给 `pxOwner` |
+| `listIS_CONTAINED_WITHIN(pxList, pxListItem)`  | `pxList`：链表指针；`pxListItem`：节点指针              | 判断节点是否属于该链表                              |
