@@ -1,56 +1,41 @@
 {
   "main": {
-    "id": "9366f32279f77df3",
+    "id": "5b6307c98f61e1c9",
     "type": "split",
     "children": [
       {
-        "id": "b37ab8850fa488ba",
+        "id": "93cd384b6af281f4",
         "type": "tabs",
         "children": [
           {
-            "id": "4ab8f63bdd610614",
+            "id": "f35a451b64502594",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "C语言.md",
+                "file": "C++.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "C语言"
-            }
-          },
-          {
-            "id": "cce969d5aeeab8fd",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "数据结构.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "数据结构"
+              "title": "C++"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "c02b4bb60d7ba414",
+    "id": "568d10949c49cb13",
     "type": "split",
     "children": [
       {
-        "id": "3ef9ebf6631f3d6d",
+        "id": "e3aeec2cfb22e7e0",
         "type": "tabs",
         "children": [
           {
-            "id": "68e5279715a86daf",
+            "id": "58c28411e7db451e",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -65,7 +50,7 @@
             }
           },
           {
-            "id": "cf88233ac3c3fc5a",
+            "id": "cdea9156ea920755",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -82,7 +67,7 @@
             }
           },
           {
-            "id": "57b5b952279390b0",
+            "id": "39ff384e0d42cfe6",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -101,20 +86,20 @@
     "width": 300
   },
   "right": {
-    "id": "8eb3913246dc0c28",
+    "id": "d3dd854deb5a8ed0",
     "type": "split",
     "children": [
       {
-        "id": "324df540bb46f578",
+        "id": "ec680a252fe4e449",
         "type": "tabs",
         "children": [
           {
-            "id": "fafbb20e67ff3052",
+            "id": "f739840bdf28d41a",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "数据结构.md",
+                "file": "C++.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -128,12 +113,12 @@
             }
           },
           {
-            "id": "310d6a896a44fa88",
+            "id": "2ca6d5bb30450c4f",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "数据结构.md",
+                "file": "C++.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -142,7 +127,7 @@
             }
           },
           {
-            "id": "31997e68ec396f9e",
+            "id": "f3e89a33f9c8d9d1",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -157,7 +142,7 @@
             }
           },
           {
-            "id": "2a350eb90643e4c6",
+            "id": "1350ef10713fbd7e",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -171,12 +156,12 @@
             }
           },
           {
-            "id": "a682f1ea5d9dcc36",
+            "id": "6337c8bb5302afb5",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "数据结构.md",
+                "file": "C++.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -203,9 +188,15 @@
       "bases:新建数据库": false
     }
   },
-  "active": "cce969d5aeeab8fd",
+  "active": "f35a451b64502594",
   "lastOpenFiles": [
-    "C语言.md",
-    "数据结构.md"
+    "未命名.md",
+    "C++.md",
+    "Pasted image 20260827114451.png",
+    "Pasted image 20260827114603.png",
+    "Pasted image 20260827182810.png",
+    "QQ_1787797996208.png",
+    "QQ_1787797976092.png",
+    "欢迎.md"
   ]
 }

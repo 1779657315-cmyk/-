@@ -2,7 +2,7 @@
 任务切换本质：
 1.保存老任务执行现场
 2.恢复新任务执行现场
-
+# 任务切换实现
 ## 1.任务现场介绍
 
 以STM32F407（Cortex-M4F）+ FreeRTOS为例：
@@ -75,7 +75,7 @@ xPortPendSVHandler()
 ***==为了精确控制 CPU 寄存器和栈，避免编译器自动生成代码破坏任务现场。==***
 
 汇编源码：
-```asm
+```arm
 void xPortPendSVHandler(void)
 {
     __asm volatile
@@ -151,8 +151,6 @@ typedef tskTCB TCB_t;
 | `pxStack`        | 指向任务栈的起始位置         |
 | `pcTaskName`     | 任务名称               |
 |                  |                    |
-内核
-
 ## 5.任务切换与链表
 链表存在本质：
 
@@ -175,3 +173,71 @@ TCB->pxTopOfStack 找到目标任务现场
 恢复 PSP + 寄存器
    ↓
 目标任务继续运行
+# 什么时候进行任务切换
+
+
+```
+pxCurrentTCB：
+内核全局指针，指向当前运行任务的 TCB。
+
+保存现场时：
+当前任务现场压入 PSP 指向的任务栈，
+再将保存完成后的栈顶地址记录到
+pxCurrentTCB->pxTopOfStack。  
+//注意区分pxTopOfStack和PSP，PSP是cpu的栈顶寄存器，指向当前正在运行任务的实时栈顶   pxTopOfStack保存该任务上次切走时的栈顶地址
+
+
+vTaskSwitchContext：
+找到最高优先级非空 ReadyList，
+通过 pxIndex 找到下一个 ListItem_t，
+再通过 pvOwner 得到对应 TCB，
+最终更新 pxCurrentTCB。
+
+PendSV 后半段：
+通过新的 pxCurrentTCB->pxTopOfStack
+找到目标任务栈，并恢复目标任务现场。
+
+PSP → 当前任务自己的任务栈
+MSP → 中断、异常使用的系统栈
+```
+
+FreeRTOS任务切换关联三个中断：
+1.SVC
+2.SysTick
+3.PendSV
+三者分工不同，但共同完成任务调度：
+## SVC:启动第一个任务
+系统启动：
+```c
+Reset_Handler
+↓
+main()
+↓
+创建多个任务
+↓
+vTaskStartScheduler()
+```
+此时任务已被创建，但还没有任务开始执行；
+
+SVC 不负责选择任务，也不负责保存旧任务；
+CPU在**不同运行场景**下会使用**不同的栈指针**：
+![[栈指针.png]]
+它根据已经确定的 `pxCurrentTCB` 找到第一个任务的初始栈，恢复现场并让该任务正式开始运行。
+
+## SysTick：时间片轮转（周期性检查是否需要切换）
+① 系统 Tick +1
+
+② 更新与时间有关的任务状态
+
+③ 判断现在是否需要重新调度
+
+当SysTick检测到任务是否需要切换，若需要，则：
+
+## 挂起PendSV，执行：
+保存当前任务
+↓
+vTaskSwitchContext()
+↓
+选择目标任务
+↓
+恢复目标任务

@@ -1,56 +1,41 @@
 {
   "main": {
-    "id": "8a68c9920c62e0c8",
+    "id": "9366f32279f77df3",
     "type": "split",
     "children": [
       {
-        "id": "8ba6050d0258b689",
+        "id": "b37ab8850fa488ba",
         "type": "tabs",
         "children": [
           {
-            "id": "2ba6d0667a899592",
+            "id": "4ab8f63bdd610614",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "欢迎.md",
+                "file": "C语言.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "欢迎"
-            }
-          },
-          {
-            "id": "3802d10264782288",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "RTOS任务切换.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "RTOS任务切换"
+              "title": "C语言"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
   },
   "left": {
-    "id": "8100cd3d0abb55bc",
+    "id": "c02b4bb60d7ba414",
     "type": "split",
     "children": [
       {
-        "id": "c76f00ce74236e2c",
+        "id": "3ef9ebf6631f3d6d",
         "type": "tabs",
         "children": [
           {
-            "id": "861ebdcd053f15f5",
+            "id": "68e5279715a86daf",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -65,7 +50,7 @@
             }
           },
           {
-            "id": "7404031d47b53c88",
+            "id": "cf88233ac3c3fc5a",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -82,7 +67,7 @@
             }
           },
           {
-            "id": "b3ab77cada3133ae",
+            "id": "57b5b952279390b0",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -98,42 +83,42 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 300
   },
   "right": {
-    "id": "ac80f211d042ea32",
+    "id": "8eb3913246dc0c28",
     "type": "split",
     "children": [
       {
-        "id": "d8c70207e39f1817",
+        "id": "324df540bb46f578",
         "type": "tabs",
         "children": [
           {
-            "id": "72acfa1adc7d6680",
+            "id": "fafbb20e67ff3052",
             "type": "leaf",
             "state": {
               "type": "backlink",
               "state": {
-                "file": "RTOS链表(26.8.15).md",
-                "collapseAll": true,
-                "extraContext": true,
+                "file": "C语言.md",
+                "collapseAll": false,
+                "extraContext": false,
                 "sortOrder": "alphabetical",
                 "showSearch": false,
                 "searchQuery": "",
                 "backlinkCollapsed": false,
-                "unlinkedCollapsed": false
+                "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
               "title": "反向链接"
             }
           },
           {
-            "id": "92d29808d1a7ea5a",
+            "id": "310d6a896a44fa88",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "欢迎.md",
+                "file": "数据结构.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
@@ -142,14 +127,14 @@
             }
           },
           {
-            "id": "84ec20e74c267d08",
+            "id": "31997e68ec396f9e",
             "type": "leaf",
             "state": {
               "type": "tag",
               "state": {
                 "sortOrder": "frequency",
                 "useHierarchy": true,
-                "showSearch": false,
+                "showSearch": true,
                 "searchQuery": ""
               },
               "icon": "lucide-tags",
@@ -157,7 +142,7 @@
             }
           },
           {
-            "id": "ebdf7574583e3859",
+            "id": "2a350eb90643e4c6",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -171,12 +156,12 @@
             }
           },
           {
-            "id": "5366d59262804f90",
+            "id": "a682f1ea5d9dcc36",
             "type": "leaf",
             "state": {
               "type": "outline",
               "state": {
-                "file": "欢迎.md",
+                "file": "C语言.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -184,24 +169,13 @@
               "icon": "lucide-list",
               "title": "大纲"
             }
-          },
-          {
-            "id": "c53e0528676bbb83",
-            "type": "leaf",
-            "state": {
-              "type": "calendar",
-              "state": {},
-              "icon": "lucide-ghost",
-              "title": "calendar"
-            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 4
       }
     ],
     "direction": "horizontal",
-    "width": 457.1666259765625,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -211,19 +185,13 @@
       "daily-notes:打开/创建今天的日记": false,
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
-      "bases:新建数据库": false,
-      "templater-obsidian:Templater": false
+      "bases:新建数据库": false
     }
   },
-  "active": "3802d10264782288",
+  "active": "a682f1ea5d9dcc36",
   "lastOpenFiles": [
-    "RTOS链表.md",
-    "RTOS任务切换.md",
-    "欢迎.md",
-    "栈帧布局.png",
-    "栈帧布局.md",
-    "QQ_1786948679663 1.png",
-    "2026-08-16.md",
-    "1.RTOS同步与互斥（26.8.11）.md"
+    "堆和栈.png",
+    "C语言.md",
+    "数据结构.md"
   ]
 }
