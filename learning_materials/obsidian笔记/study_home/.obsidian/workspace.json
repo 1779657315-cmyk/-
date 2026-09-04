@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "C++/库函数.md",
+                "file": "Linux_UPDATE/瑞芯微指令表.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "库函数"
+              "title": "瑞芯微指令表"
             }
           }
         ]
@@ -40,7 +40,7 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical",
+                "sortOrder": "byModifiedTime",
                 "autoReveal": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -189,28 +189,33 @@
   },
   "active": "e96d50b1414e4b42",
   "lastOpenFiles": [
-    "2026-08-28.md",
+    "Linux_UPDATE/LOADER.md",
+    "Linux_UPDATE/瑞芯微指令表.md",
+    "Linux_UPDATE/U-BOOT.md",
+    "images/QQ_1788491704873.png",
+    "Linux_UPDATE/update：.md.tmp.102122.1ae14a8e8127",
+    "images/mermaid-diagram (3).png",
+    "images/QQ_1788350879142.png",
+    "images/QQ_1788344635465.png",
+    "images/QQ_1788339737489.png",
+    "images/QQ_1788333275156.png",
+    "images/QQ_1788332116580.png",
+    "images/QQ_1788316131012.png",
+    "images/QQ_1788316003203.png",
+    "images/QQ_1788315960171.png",
+    "八股/C语言.md",
+    "Linux_UPDATE",
+    "未命名.md",
+    "八股/数据结构.md",
     "C++/库函数.md",
+    "2026-08-28.md",
     "C++/关键字.md",
     "C++/基础语法.md",
     "c++/C++.md",
-    "images/栈帧布局.png",
-    "images/栈指针.png",
-    "images/Pasted image 20260827114603.png",
-    "images/堆和栈.png",
-    "images/QQ_1787797976092.png",
-    "images/QQ_1787797996208.png",
-    "images/QQ_1787881630137.png",
-    "images/QQ_1787885661059.png",
-    "images/QQ_1787885792287.png",
-    "images/Pasted image 20260827182810.png",
-    "未命名.md",
-    "八股/C语言.md",
     "RTOS笔记/RTOS任务切换.md",
     "RTOS笔记/RTOS链表.md",
     "RTOS笔记/RTOS队列.md",
     "images",
-    "八股/数据结构.md",
     "2026-08-27.md",
     "C++.md",
     "RTOS笔记/欢迎.md"
